@@ -29,6 +29,22 @@ func getPrice(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON response", http.StatusInternalServerError)
 		return
 	}
+
+	// Extract prices
+	bitcoinPrice := data.Bitcoin["cad"]
+	ethereumPrice := data.Ethereum["cad"]
+	tetherPrice := data.Tether["cad"]
+
+	// Create a JSON response
+	response := map[string]float64{
+		"bitcoin":  bitcoinPrice,
+		"ethereum": ethereumPrice,
+		"tether":   tetherPrice,
+	}
+
+	// Send JSON response
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }
 
 func main() {
